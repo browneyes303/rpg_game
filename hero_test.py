@@ -18,40 +18,48 @@ class Character:
             return False
 
     def attack(self, enemy):
-        if (self.character_name == "hero"):
-            roll = random.randint(1,5)
-            if roll == 1:
+        def attack_status(self):
+            print(f"You do {self.power} damage to the {enemy.character_name}.")
+
+        if (self.character_name == "hero"): # HERO doubles power 20% of the time
+            hero_roll = random.randint(1,5)
+            if hero_roll == 1 and enemy is not "shadow":
                 self.power = int(self.power*2)
                 enemy.health -= self.power
-                print(f"You do {self.power} damage to the {enemy.character_name}.")
                 self.power = int(self.power/2)
+                print("debug pause")
             else:
                 enemy.health -= self.power
-                print(f"You do {self.power} damage to the {enemy.character_name}.")
+            print(f"The {self.character_name} does {self.power} damage to you.")
 
-        elif (self.character_name == "goblin"):
+
+        elif (self.character_name == "goblin"): # GOBLIN does nothing extra
             enemy.health -= self.power
             print(f"The {self.character_name} does {self.power} damage to you.")
 
-        elif (self.character_name == "medic"):
-            roll = random.randint(1,5)
-            if roll == 5:
-                self.health = int(self.health+2)
-                enemy.health -= self.power
-                print(f"You do {self.power} damage to the {enemy.character_name}.")
-            else:
-                enemy.health -= self.power
+        elif (self.character_name == "medic"): # MEDIC adds 2 health points 20% of the time
+            medic_roll = random.randint(1,5)
+            if medic_roll == 5:
+                self.health += 2
+            enemy.health -= self.power  # medic attacks hero
             print(f"The {self.character_name} does {self.power} damage to you.")
 
-        elif (self.character_name == "medic"):
-            roll = random.randint(1,5)
-            if roll == 5:
-                self.health = int(self.health+2)
-                enemy.health -= self.power
-                print(f"You do {self.power} damage to the {enemy.character_name}.")
+        elif (self.character_name == "shadow"): # SHADOW only takes damage 10% of the time
+            shadow_roll = random.randint(1,10)
+            if shadow_roll == 10:
+                print(f"You do {self.power} damage to the {self.character_name}.") # shadow takes a hit
             else:
-                enemy.health -= self.power
+                self.health += enemy.power    # shadow doesn't lose health
+                print(f"You do zero damage to the {self.character_name}")
+            enemy.health -= self.power          # shadow attacks hero
             print(f"The {self.character_name} does {self.power} damage to you.")
+
+# zombie
+        elif (self.character_name == "zombie"): 
+            enemy.health -= self.power
+            attack_status()
+# wizard
+# dragon
 
     def print_status(self):
         if (self.character_name == "hero"):
@@ -62,6 +70,8 @@ class Character:
             print(f"The {self.character_name} has {self.health} health and {self.power} power.")
         elif (self.character_name == "shadow"):
             print(f"The {self.character_name} has {self.health} health and {self.power} power.")
+    
+
 
 
 class Hero(Character):
@@ -90,19 +100,25 @@ class Shadow(Character):
 def main():
 
     hero = Hero(100, 5)
-    goblin = Goblin(6, 2)
+    goblin = Goblin(100, 2)
     medic = Medic(100, 3)
+    shadow = Shadow(100, 5)
 
     while goblin.alive() and hero.alive():
         hero.print_status()
         print("What do you want to do?")
+        print("0. flee")
         print("1. fight goblin")
         print("2. fight medic")
-        print("3. do nothing")
-        print("4. flee")
+        print("3. fight shadow")
+        print("4. fight zombie")
+        print("5. fight wizard")
+        print("6. fight dragon")
+        print("7. do nothing")
         print("> ", end=" ")
         raw_input = input()
-        if raw_input == "1":
+
+        if raw_input == "1": #goblin
             if not hero.alive():
                 print("You are dead.")
             else:
@@ -114,7 +130,8 @@ def main():
             else:
                 goblin.attack(hero)
                 goblin.print_status()
-        elif raw_input == "2":
+
+        elif raw_input == "2": #medic
             if not hero.alive():
                 print("You are dead.")
             else:
@@ -126,9 +143,28 @@ def main():
                 medic.alive()
                 medic.attack(hero)
                 medic.print_status()
-        elif raw_input == "3":
-            pass
+
+        elif raw_input == "3": # shadow
+            if not hero.alive():
+                print("You are dead.")
+            else:
+                hero.attack(shadow)
+
+            if not shadow.alive(): 
+                print("The shadow is dead.")
+            else:
+                shadow.alive()
+                shadow.attack(hero)
+                shadow.print_status()
         elif raw_input == "4":
+            pass
+        elif raw_input == "5":
+            pass
+        elif raw_input == "6":
+            pass
+        elif raw_input == "7":
+            pass
+        elif raw_input == "0":
             print("Goodbye.")
             break
         else:
