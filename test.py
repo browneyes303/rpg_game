@@ -10,3 +10,5 @@
             self.power = (self.power/2)
         else:
             enemy.health -= self.power
+
+    print("debug pause")
