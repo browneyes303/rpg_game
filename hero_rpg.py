@@ -146,11 +146,11 @@ class Dragon(Character):
         super(Dragon, self).__init__(health, power)
 
 hero = Hero(50, 5)
-goblin = Goblin(100, 2)
-medic = Medic(100, 3)
-shadow = Shadow(100, 5)
+goblin = Goblin(10, 2)
+medic = Medic(20, 3)
+shadow = Shadow(1, 5)
 zombie = Zombie(20, 5)
-wizard = Wizard(100, 5)
+wizard = Wizard(10, 5)
 dragon = Dragon(100, 10)
 
 def choose_enemy():
